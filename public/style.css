@@ -480,3 +480,56 @@ body {
     .footer-grid { grid-template-columns: 1fr; }
     .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
 }
+/* ===== LUTHFI AI CHAT MARKDOWN FIX ===== */
+
+.msg-ai {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.msg-ai pre {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    padding: 14px;
+    margin: 12px 0;
+    border-radius: 10px;
+    background: #0b1020;
+    border: 1px solid rgba(255,255,255,0.1);
+    white-space: pre;
+}
+
+.msg-ai pre code {
+    display: block;
+    width: max-content;
+    min-width: 100%;
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.msg-ai code {
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.msg-ai h2,
+.msg-ai h3,
+.msg-ai h4 {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    margin: 14px 0 8px;
+}
+
+@media (max-width: 600px) {
+    .msg-ai {
+        max-width: 100%;
+    }
+
+    .msg-ai pre {
+        font-size: 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
