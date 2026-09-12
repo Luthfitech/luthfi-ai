@@ -200,14 +200,18 @@ async function sendChatMessage() {
 
         if (data.success) {
     aiMsg.innerHTML = `
-        <div class="ai-response-content">
-            ${formatAIResponse(data.reply)}
-        </div>
-        <button class="copy-ai-btn" onclick="copyAIResponse(this)">
-            <i class="fa-regular fa-copy"></i> Copy
-        </button>
-    `;
+    <div class="ai-response-content">
+        ${formatAIResponse(data.reply)}
+    </div>
 
+    <button class="copy-ai-btn" onclick="copyAIResponse(this)">
+        <i class="fa-regular fa-copy"></i> Copy
+    </button>
+
+    <button class="copy-ai-btn" onclick="regenerateAIResponse(this)">
+        <i class="fa-solid fa-rotate-right"></i> Regenerate
+    </button>
+`;
     addHistoryItem(text.substring(0, 30) + '...', 'Chat', 'success');
 }
          else {
@@ -607,4 +611,55 @@ function initCounterAnimation() {
             }
         });
     });
+}
+
+async function regenerateAIResponse(button) {
+    const aiMsg = button.closest('.chat-msg');
+    if (!aiMsg) return;
+
+    const userMsg = aiMsg.previousElementSibling;
+    if (!userMsg || !userMsg.classList.contains('msg-user')) {
+        showToast('Pesan sebelumnya tidak ditemukan', true);
+        return;
+    }
+
+    const text = userMsg.textContent.trim();
+
+    button.disabled = true;
+    button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            aiMsg.innerHTML = `
+                <div class="ai-response-content">
+                    ${formatAIResponse(data.reply)}
+                </div>
+
+                <button class="copy-ai-btn" onclick="copyAIResponse(this)">
+                    <i class="fa-regular fa-copy"></i> Copy
+                </button>
+
+                <button class="copy-ai-btn" onclick="regenerateAIResponse(this)">
+                    <i class="fa-solid fa-rotate-right"></i> Regenerate
+                </button>
+            `;
+            showToast('Jawaban berhasil dibuat ulang!');
+        } else {
+            showToast(data.error || 'Gagal regenerate', true);
+            button.disabled = false;
+            button.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Regenerate';
+        }
+    } catch (err) {
+        showToast('Gagal terhubung ke server', true);
+        button.disabled = false;
+        button.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Regenerate';
+    }
 }
