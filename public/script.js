@@ -198,21 +198,24 @@ async function sendChatMessage() {
         const aiMsg = document.createElement('div');
         aiMsg.className = 'chat-msg msg-ai';
 
-        if (data.success) {
+    if (data.success) {
     aiMsg.innerHTML = `
-    <div class="ai-response-content">
-        ${formatAIResponse(data.reply)}
-    </div>
+        <div class="ai-response-content">
+            ${formatAIResponse(data.reply)}
+        </div>
 
-    <button class="copy-ai-btn" onclick="copyAIResponse(this)">
-        <i class="fa-regular fa-copy"></i> Copy
-    </button>
+        <button class="copy-ai-btn" onclick="copyAIResponse(this)">
+            <i class="fa-regular fa-copy"></i> Copy
+        </button>
 
-    <button class="copy-ai-btn" onclick="regenerateAIResponse(this)">
-        <i class="fa-solid fa-rotate-right"></i> Regenerate
-    </button>
-`;
+        <button class="copy-ai-btn" onclick="regenerateAIResponse(this)">
+            <i class="fa-solid fa-rotate-right"></i> Regenerate
+        </button>
+    `;
+
     addHistoryItem(text.substring(0, 30) + '...', 'Chat', 'success');
+    
+    
 }
          else {
             aiMsg.style.borderColor = '#ef4444';
