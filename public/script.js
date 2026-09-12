@@ -199,9 +199,18 @@ async function sendChatMessage() {
         aiMsg.className = 'chat-msg msg-ai';
 
         if (data.success) {
-            aiMsg.innerHTML = formatAIResponse(data.reply);
-            addHistoryItem(text.substring(0, 30) + '...', 'Chat', 'success');
-        } else {
+    aiMsg.innerHTML = `
+        <div class="ai-response-content">
+            ${formatAIResponse(data.reply)}
+        </div>
+        <button class="copy-ai-btn" onclick="copyAIResponse(this)">
+            <i class="fa-regular fa-copy"></i> Copy
+        </button>
+    `;
+
+    addHistoryItem(text.substring(0, 30) + '...', 'Chat', 'success');
+}
+         else {
             aiMsg.style.borderColor = '#ef4444';
             aiMsg.innerHTML = `<strong style="color:#ef4444;"><i class="fa-solid fa-circle-exclamation"></i> Error:</strong> ${data.error}`;
             addHistoryItem(text.substring(0, 30) + '...', 'Chat', 'failed');
@@ -223,7 +232,24 @@ async function sendChatMessage() {
         chatBox.scrollTop = chatBox.scrollHeight;
     }
 }
+function copyAIResponse(button) {
+    const content = button.parentElement.querySelector('.ai-response-content');
+    if (!content) return;
 
+    navigator.clipboard.writeText(content.innerText).then(() => {
+        const original = button.innerHTML;
+
+        button.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        button.classList.add('copied');
+
+        setTimeout(() => {
+            button.innerHTML = original;
+            button.classList.remove('copied');
+        }, 1500);
+    }).catch(() => {
+        showToast('Failed to copy response', true);
+    });
+}
 function clearChatMessages() {
     const chatBox = document.getElementById('chat-messages-box');
     chatBox.innerHTML = `<div class="chat-msg msg-ai">Chat reset. How can I assist you today?</div>`;
