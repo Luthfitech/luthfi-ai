@@ -1,0 +1,25 @@
+{
+  "name": "luthfi-ai",
+  "version": "2.6.0",
+  "description": "Luthfi AI - Your All-in-One AI Agent & Application Platform powered by Gemini API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "ai",
+    "gemini",
+    "luthfi-ai",
+    "agents",
+    "generators",
+    "express"
+  ],
+  "author": "Luthfi AI Team",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^0.1.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
