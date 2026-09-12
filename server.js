@@ -19,7 +19,7 @@ function getAIClient() {
   return new GoogleGenAI({ apiKey });
 }
 
-const TEXT_MODEL = process.env.GEMINI_TEXT_MODEL || 'gemini-2.5-flash';
+const TEXT_MODEL = process.env.GEMINI_TEXT_MODEL || 'gemini-3.6-flash';
 const IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || 'imagen-3.0-generate-002';
 
 app.get('/api/health', (req, res) => {
