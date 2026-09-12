@@ -564,3 +564,27 @@ body {
     color: #10b981;
     border-color: rgba(16, 185, 129, 0.4);
 }
+/* Rapikan tombol Copy + Regenerate */
+.ai-response-content + .copy-ai-btn,
+.copy-ai-btn + .copy-ai-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    min-width: 0;
+    padding: 7px 12px;
+    margin-top: 10px;
+    margin-right: 6px;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+/* Khusus tampilan HP */
+@media (max-width: 600px) {
+    .copy-ai-btn {
+        width: auto !important;
+        padding: 7px 10px !important;
+        margin-top: 10px;
+        margin-right: 5px;
+    }
+}
