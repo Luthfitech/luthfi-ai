@@ -124,7 +124,42 @@ function handleChatKeyDown(event) {
         sendChatMessage();
     }
 }
+function formatAIResponse(text) {
+    // Escape HTML dulu supaya respons AI tidak bisa menyisipkan HTML berbahaya
+    const escapeHTML = (str) =>
+        str.replace(/&/g, '&amp;')
+           .replace(/</g, '&lt;')
+           .replace(/>/g, '&gt;');
 
+    let safe = escapeHTML(text);
+
+    // Code block ```...```
+    safe = safe.replace(/```([\s\S]*?)```/g, (match, code) => {
+        return `<pre><code>${code.trim()}</code></pre>`;
+    });
+
+    // Inline code `...`
+    safe = safe.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+
+    // Bold **text**
+    safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    // Italic *text*
+    safe = safe.replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g, '<em>$1</em>');
+
+    // Markdown headings
+    safe = safe.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+    safe = safe.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+    safe = safe.replace(/^# (.+)$/gm, '<h2>$1</h2>');
+
+    // Bullet points
+    safe = safe.replace(/^[*-] (.+)$/gm, '• $1');
+
+    // Line breaks
+    safe = safe.replace(/\n/g, '<br>');
+
+    return safe;
+}
 async function sendChatMessage() {
     const input = document.getElementById('chat-input-field');
     const chatBox = document.getElementById('chat-messages-box');
@@ -164,7 +199,7 @@ async function sendChatMessage() {
         aiMsg.className = 'chat-msg msg-ai';
 
         if (data.success) {
-            aiMsg.textContent = data.reply;
+            aiMsg.innerHTML = formatAIResponse(data.reply);
             addHistoryItem(text.substring(0, 30) + '...', 'Chat', 'success');
         } else {
             aiMsg.style.borderColor = '#ef4444';
