@@ -186,10 +186,16 @@ async function sendChatMessage() {
 
     try {
         const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: text })
-        });
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        message: text,
+        image: selectedChatImage ? {
+            data: selectedChatImage.data,
+            mimeType: selectedChatImage.mimeType
+        } : null
+    })
+});
 
         const data = await response.json();
         const typingMsg = document.getElementById('temp-typing');
