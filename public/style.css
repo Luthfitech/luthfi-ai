@@ -602,3 +602,20 @@ body {
     width: auto !important;
     margin: 12px 6px 0 0 !important;
 }
+/* Tombol aksi jawaban AI */
+.msg-ai .copy-ai-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: auto !important;
+    min-width: unset !important;
+    height: 38px;
+    padding: 0 12px !important;
+    margin: 12px 6px 0 0 !important;
+    vertical-align: top;
+}
+
+/* Tombol kedua jangan pindah baris */
+.msg-ai .copy-ai-btn + .copy-ai-btn {
+    display: inline-flex !important;
+}
