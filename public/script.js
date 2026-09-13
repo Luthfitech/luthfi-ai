@@ -666,3 +666,42 @@ async function regenerateAIResponse(button) {
         button.innerHTML = '<i class="fa-solid fa-rotate-right"></i> Regenerate';
     }
 }
+
+// ===== IMAGE UPLOAD =====
+let selectedChatImage = null;
+
+const chatFileInput = document.getElementById('chat-file-input');
+
+if (chatFileInput) {
+    chatFileInput.addEventListener('change', function () {
+        const file = this.files[0];
+
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            showToast('Pilih file gambar ya!', true);
+            this.value = '';
+            return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+            showToast('Ukuran gambar maksimal 5 MB!', true);
+            this.value = '';
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            selectedChatImage = {
+                data: e.target.result.split(',')[1],
+                mimeType: file.type,
+                preview: e.target.result
+            };
+
+            showToast('Gambar siap dikirim!');
+        };
+
+        reader.readAsDataURL(file);
+    });
+}
