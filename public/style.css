@@ -595,3 +595,10 @@ body {
     width: auto !important;
     margin: 12px 6px 0 0 !important;
 }
+/* Copy + Regenerate sejajar */
+.ai-response-content ~ .copy-ai-btn {
+    display: inline-flex !important;
+    vertical-align: middle;
+    width: auto !important;
+    margin: 12px 6px 0 0 !important;
+}
