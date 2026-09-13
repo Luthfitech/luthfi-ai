@@ -43,35 +43,68 @@ app.get('/api/health', (req, res) => {
 
 app.post('/api/chat', async (req, res) => {
   try {
-    const { message } = req.body;
-    if (!message || message.trim() === '') {
-      return res.status(400).json({ success: false, error: 'Message content is required.' });
+    const { message, image, mimeType } = req.body;
+
+    if ((!message || message.trim() === '') && !image) {
+      return res.status(400).json({
+        success: false,
+        error: 'Pesan atau gambar harus diisi.'
+      });
     }
 
     const ai = getAIClient();
+
     if (!ai) {
       return res.status(400).json({
         success: false,
-        error: 'Gemini API key is not configured on the server. Please add GEMINI_API_KEY to your .env file.'
+        error: 'Gemini API key belum dikonfigurasi.'
       });
+    }
+
+    let contents;
+
+    // Jika ada gambar, kirim teks + gambar ke Gemini
+    if (image) {
+      contents = [
+        {
+          text: message && message.trim()
+            ? message
+            : 'Analisis dan jelaskan gambar ini.'
+        },
+        {
+          inlineData: {
+            mimeType: mimeType || 'image/jpeg',
+            data: image
+          }
+        }
+      ];
+    } else {
+      // Chat teks biasa
+      contents = message;
     }
 
     const response = await ai.models.generateContent({
       model: TEXT_MODEL,
-      contents: message,
+      contents: contents,
       config: {
-        systemInstruction: 'You are Luthfi AI, an advanced, intelligent, and helpful AI assistant. Provide concise, clear, and well-structured responses using markdown formatting where helpful.'
+        systemInstruction:
+          'You are Luthfi AI, an advanced, intelligent, and helpful AI assistant. Jawab menggunakan bahasa yang sama dengan pengguna. Jika pengguna mengirim gambar, analisis isi gambar dengan jelas dan akurat.'
       }
     });
 
-    const reply = response.text || 'No response generated from AI.';
-    return res.json({ success: true, reply });
+    const reply = response.text || 'Tidak ada respons dari AI.';
+
+    return res.json({
+      success: true,
+      reply
+    });
 
   } catch (err) {
     console.error('[Error /api/chat]:', err);
+
     return res.status(500).json({
       success: false,
-      error: err.message || 'An error occurred while processing your chat request.'
+      error: err.message || 'Terjadi kesalahan saat memproses permintaan.'
     });
   }
 });
