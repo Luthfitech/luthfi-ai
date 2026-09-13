@@ -382,7 +382,8 @@
                             </div>
 
                             <div class="chat-input-bar">
-                                <button class="btn-icon" onclick="showToast('Attachment feature ready')"><i class="fa-solid fa-paperclip"></i></button>
+                                <input type="file" id="chat-file-input" accept="image/*" hidden>
+                                <button class="btn-icon" onclick="document.getElementById('chat-file-input').click()" title="Upload Image"><i class="fa-solid fa-paperclip"></i></button>
                                 <textarea id="chat-input-field" class="form-input" style="height:44px; resize:none; padding:0.6rem 0.9rem;" placeholder="Message Luthfi AI... (Shift+Enter for newline)" onkeydown="handleChatKeyDown(event)"></textarea>
                                 <button class="btn-icon" onclick="showToast('Voice input active')"><i class="fa-solid fa-microphone"></i></button>
                                 <button class="btn btn-primary" id="btn-chat-send" onclick="sendChatMessage()"><i class="fa-solid fa-paper-plane"></i></button>
